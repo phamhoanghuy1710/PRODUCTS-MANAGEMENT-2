@@ -183,9 +183,11 @@ if (sort){
     //them selected cho cac option
     const sortKeyUrl = url.searchParams.get("sortKey");
     const sortValueUrl = url.searchParams.get("sortValue");
-    const stringSort = `${sortKeyUrl}-${sortValueUrl}`;
-    const selectedOption = sortSelect.querySelector(`option[value='${stringSort}']`);
-    selectedOption.selected = true;
+    if (sortKeyUrl && sortValueUrl){
+        const stringSort = `${sortKeyUrl}-${sortValueUrl}`;
+        const selectedOption = sortSelect.querySelector(`option[value='${stringSort}']`);
+        selectedOption.selected = true;
+    }
 
 }
 // end sort 

@@ -1,4 +1,5 @@
 const express = require("express"); // nhung express
+const path = require("path");
 const methodOverride = require("method-override");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
@@ -23,6 +24,10 @@ app.use(cookieParser("keyboard cat"));
 app.use(session({cookie: {maxAge:6000}}));
 app.use(flash());
 //end flash
+
+//timyMCE
+app.use('/tinymce',express.static(path.join(__dirname,'node_modules','tinymce')));
+//end timyMCE
 
 
 app.use(express.static(`${__dirname}/public`)); // nhung tinh
