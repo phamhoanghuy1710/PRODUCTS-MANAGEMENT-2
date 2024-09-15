@@ -2,8 +2,13 @@ const ProductsCategory = require("../../models/productsCategory.model");
 const systemConfig = require("../../config/systems");
 //[GET] /admin/products-category
 module.exports.index = async (req,res)=>{
+    const find = {
+        deleted: false
+    }
+    const records = await ProductsCategory.find(find);
     res.render("admin/pages/products-category/index", {
         pageTitle: "Trang danh muc san pham",
+        records: records
     });
 }
 //[GET] /admin/products-category/create
