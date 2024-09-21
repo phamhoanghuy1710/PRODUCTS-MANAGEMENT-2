@@ -6,6 +6,9 @@ const searchHelper = require("../../helpers/search");
 const search = require("../../helpers/search");
 const paginationHelper = require("../../helpers/pagination");
 const systemConfig = require("../../config/systems");
+const ProductsCategory = require("../../models/productsCategory.model");
+const createTreeHelper = require("../../helpers/createTree");
+
 module.exports.index = async (req,res)=>{
     // console.log(req.query.status);
     // doan code filterStatus
@@ -110,13 +113,19 @@ module.exports.deleteItem = async (req,res)=>{
     req.flash("success",`Xoa  thanh cong  san pham`);
     res.redirect("back");
 }
-
-module.exports.createItem = (req,res)=>{
+//[Get]  /admin/products/create
+module.exports.createItem = async (req,res)=>{
+    const find = {
+        deleted: false,
+    }
+    const category = await ProductsCategory.find(find);
+    const newCategory = createTreeHelper.tree(category);
     res.render("admin/pages/products/create",{
-        pageTitle: "Them moi mot san pham"
+        pageTitle: "Them moi mot san pham",
+        category: newCategory,
     })
 }
-
+//[Post]  /admin/products/create
 module.exports.createItemPost = async (req,res)=>{
    
     req.body.price = parseInt(req.body.price);
@@ -135,16 +144,20 @@ module.exports.createItemPost = async (req,res)=>{
     res.redirect(`${systemConfig.prefixAdmin}/products`);  
 }
 
+//[Get]  /admin/products/edit/:id // neu ma get ma co id thi phai co try
 module.exports.editItem = async (req,res)=>{
     try{
         const find = {
             deleted: false,
             _id: req.params.id
         }
+        const category = await ProductsCategory.find({deleted:false});
+        const newCategory = createTreeHelper.tree(category);
         const products = await Product.findOne(find);
         res.render("admin/pages/products/edit",{
             pageTitle: "Chinh sua mot san pham",
-            products: products
+            products: products,
+            category: newCategory
         });
     }
     catch(error){
@@ -152,6 +165,7 @@ module.exports.editItem = async (req,res)=>{
     }
 }
 
+//[POST]  /admin/products/edit/:id
 module.exports.editPatch = async (req,res)=>{
     req.body.price = parseInt(req.body.price);
     req.body.discountPercentage = parseInt(req.body.discountPercentage);
@@ -167,6 +181,7 @@ module.exports.editPatch = async (req,res)=>{
     res.redirect("back");
 }
 
+//[Get]  /admin/products/edit/:id
 module.exports.detailItem = async (req,res)=>{
     try{
         const find = {

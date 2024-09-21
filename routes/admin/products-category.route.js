@@ -15,5 +15,11 @@ route.post(
     uploadCloundMiddleware.upload,
     productsCategoryValidate.createPost,
     controller.createPost);
-
+route.get("/edit/:id",controller.edit);
+route.patch("/edit/:id",
+    upload.single('thumbnail'),
+    uploadCloundMiddleware.upload,
+    productsCategoryValidate.createPost,
+    controller.editPatch
+);
 module.exports = route;

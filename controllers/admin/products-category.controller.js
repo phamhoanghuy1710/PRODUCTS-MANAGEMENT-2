@@ -38,3 +38,35 @@ module.exports.createPost = async (req,res)=>{
     await record.save();
     res.redirect(`${systemConfig.prefixAdmin}/products-category`);
 }
+
+//[Get] /admin/products-category/edit
+module.exports.edit = async (req,res)=>{
+    try {
+        const id = req.params.id;
+        const data = await ProductsCategory.findOne({
+            _id:id,
+            deleted: false
+        });
+        const record = await ProductsCategory.find({
+            deleted: false
+        });
+        const newRecords = createTreeHelper.tree(record);
+        res.render("admin/pages/products-category/edit",{
+            pageTitle: "Chinh sua mot danh muc san pham",
+            data: data,
+            records: newRecords
+        });
+    }catch(error){
+        res.redirect(`${systemConfig.prefixAdmin}/products-category`);
+    }
+}
+//[PATCH] /admin/products-category/edit
+module.exports.editPatch = async (req,res)=>{
+    const id = req.params.id;
+    req.body.position = parseInt(req.body.position);
+    await ProductsCategory.updateOne({
+        _id:id
+
+    },req.body)
+    res.redirect("back");
+}
