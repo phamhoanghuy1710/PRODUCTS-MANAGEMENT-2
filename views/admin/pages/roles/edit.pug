@@ -1,0 +1,36 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+block main 
+    +alert-success(5000)
+    +alert-error(5000)
+    h1(class="mb-4") Chinh sua nhom quyen
+
+    form(
+        action=`${prefixAdmin}/roles/edit/${role._id}?_method=PATCH`
+        method="POST"
+    )
+        div(class="form-group")
+            label(for="title") Tieu de
+            input(
+                type="text"
+                class="form-control"
+                id="title"
+                name="title"
+                value=role.title
+                required
+            ) 
+        div(class="form-group")
+            label(for="desc") Mo ta 
+            input(
+                type="text"
+                class="form-control"
+                id="desc"
+                name="description"
+                value=role.description
+            ) 
+        div(class="form-group")
+            button(
+                type="submit"
+                class="btn btn-primary"
+            ) Cap nhat
+

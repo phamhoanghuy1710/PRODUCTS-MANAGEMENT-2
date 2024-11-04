@@ -11,9 +11,11 @@ const systemConfig = require("./config/systems");
 const route = require("./routes/client/index.route")
 const routeadmin = require("./routes/admin/index.route")
 
+// ket noi database
 database.connect();
 
 const app = express(); // nhung app
+
 app.use(methodOverride("_method")); // method override dung de truy cap pt patch
 const port = process.env.PORT; 
 
